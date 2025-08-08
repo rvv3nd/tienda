@@ -6,6 +6,7 @@ import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
 import 'primeicons/primeicons.css'
 import ToastService from 'primevue/toastservice'
+import ConfirmationService from 'primevue/confirmationservice'
 import Ripple from 'primevue/ripple'
 import { useAuthStore } from './stores/auth'
 import { decrypt } from './utils/encrypt'
@@ -21,6 +22,7 @@ app.use(PrimeVue, {
   },
 })
 app.use(ToastService)
+app.use(ConfirmationService)
 app.directive('ripple', Ripple)
 app.mount('#app')
 
@@ -34,7 +36,8 @@ if (token && user) {
   // Decrypt user data before setting it in the store
   const decryptedEmail = decrypt(JSON.parse(user).email)
   const decryptedRole = decrypt(JSON.parse(user).role)
-  authStore.user = { email: decryptedEmail, role: decryptedRole }
+  const decryptedId = Number(decrypt(JSON.parse(user).id))
+  authStore.user = { id: decryptedId, email: decryptedEmail, role: decryptedRole }
   // Set isAuthenticated to true
   authStore.isAuthenticated = true
   //console.log('User authenticated:', authStore.user)

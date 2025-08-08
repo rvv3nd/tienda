@@ -3,6 +3,7 @@ import { encrypt } from '@/utils/encrypt'
 import api from '../api/axios'
 
 interface User {
+  id: any
   email: string
   role: string
 }
@@ -29,7 +30,11 @@ export const useAuthStore = defineStore('auth', {
           localStorage.setItem('token', this.token)
           localStorage.setItem(
             'user',
-            JSON.stringify({ email: emailEncrypted, role: encrypt(data.user.role) }),
+            JSON.stringify({
+              id: encrypt(data.user.id.toString()),
+              email: emailEncrypted,
+              role: encrypt(data.user.role),
+            }),
           ) // Store user data in localStorage to avoid re-login when token is valid and it is already encrypted
           this.user = data.user // store gets unencrypted user data to avoid re-decrypting it
           //set isAuthenticated to true

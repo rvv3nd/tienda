@@ -10,7 +10,7 @@ if (!SECRET_KEY) {
 export function encrypt(text: string): string {
   try {
     const encrypted = CryptoJS.AES.encrypt(text, SECRET_KEY).toString()
-    console.log('Texto encriptado:', encrypted)
+    //console.log('Texto encriptado:', encrypted)
     return encrypted
   } catch (error) {
     console.error('Error al encriptar:', error)
