@@ -20,11 +20,16 @@ export async function createUser(user: any) {
     throw new Error('No token found in localStorage')
   }
   //console.log('Token used for creating user:', token)
-  return api.post('/users', encryptedData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  return api
+    .post('/users', encryptedData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .catch((error) => {
+      console.error('Error creating user:', error)
+      return Promise.reject(error.response?.data || { message: 'Error creating user' })
+    })
 }
 export async function deleteUser(userId: number) {
   console.log('Deleting user with ID:', userId)
@@ -39,10 +44,13 @@ export async function deleteUser(userId: number) {
     return Promise.reject(error)
   }
 }
-export async function updateUserById(id: any, updatedFields: []) {
+export async function updateUserById(id: any, updatedFields: { [key: string]: any }) {
   try {
     //encrypts updatedFields
-
+    for (const key in updatedFields) {
+      updatedFields[key] =
+        updatedFields[key] === '' ? null : encrypt(updatedFields[key]?.toString()) //encrypt all fields
+    }
     const response = await api.put(`/users/${id}`, updatedFields, {
       headers: {
         Authorization: `Bearer ${token}`,

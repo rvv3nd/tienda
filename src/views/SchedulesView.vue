@@ -256,7 +256,9 @@ watch(searchTerm, (val) => {
   }, 1000)
 })
 
-onMounted(loadSchedules)
+onMounted(async () => {
+  await loadSchedules()
+})
 
 async function getUserEmailById(userId: number) {
   const user = (await getUserbyId(userId)) as any
@@ -347,21 +349,27 @@ async function saveSchedule() {
 }
 
 function openEditDialog(schedule: any) {
-  // schedule: { id, userId, date, startTime, endTime }
+  // schedule: { id, user, date, startTime, endTime }
+  // Guardar los datos originales para comparación y edición
   originalSchedule.value = {
     id: schedule.id,
-    userId: schedule.userId,
+    userId: null, // Se obtiene el id del usuario a partir del email
     date: schedule.date,
     startTime: schedule.startTime,
     endTime: schedule.endTime,
   }
+  // Buscar el id del usuario a partir del email mostrado en el campo user
+  const userList: any[] = users.value as any[]
+  const userObj = userList.find((u) => u.email === schedule.user)
+  const userId = userObj ? userObj.id : null
+  originalSchedule.value.userId = userId
   editScheduleForm.value.id = schedule.id
-  editScheduleForm.value.userId = schedule.userId
+  editScheduleForm.value.userId = userId
   // Convertir string a Date para Calendar
   editScheduleForm.value.date = schedule.date ? new Date(schedule.date) : null
   // Extraer solo la hora para el input
-  editScheduleForm.value.startTime = schedule.startTime ? schedule.startTime.slice(11, 16) : ''
-  editScheduleForm.value.endTime = schedule.endTime ? schedule.endTime.slice(11, 16) : ''
+  editScheduleForm.value.startTime = schedule.startTime ? schedule.startTime.slice(0, 5) : ''
+  editScheduleForm.value.endTime = schedule.endTime ? schedule.endTime.slice(0, 5) : ''
   dialogEditHorarioVisible.value = true
 }
 

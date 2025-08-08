@@ -15,7 +15,6 @@ export async function fetchSales() {
     })
 }
 
-// Ahora createSale acepta múltiples productos
 export async function createSale(sale: {
   user_id: string
   products: { product_id: any; quantity: any; price: any }[]
@@ -29,11 +28,16 @@ export async function createSale(sale: {
   }))
 
   //console.log('Creating sale with products:', sale.user_id, sale.products)
-  return api.post('/sales', sale, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  return api
+    .post('/sales', sale, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .catch((error) => {
+      console.error('Error creating sale:', error)
+      return Promise.reject(error)
+    })
 }
 
 export async function fetchSaleById(id: number) {

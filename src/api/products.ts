@@ -20,11 +20,16 @@ export async function createProduct(product: { name: string; price: string; stoc
   product.name = encrypt(product.name)
   product.price = encrypt(product.price)
   product.stock = encrypt(product.stock)
-  return api.post('/products', product, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  return api
+    .post('/products', product, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .catch((error) => {
+      console.error('Error creating product:', error)
+      return Promise.reject(error)
+    })
 }
 
 export async function deleteProduct(productId: number) {

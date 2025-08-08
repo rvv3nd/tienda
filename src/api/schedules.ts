@@ -15,11 +15,16 @@ export async function createSchedule(schedule: any) {
     schedule[key] = schedule[key] === '' ? null : encrypt(schedule[key].toString()) //encrypt all fields
   }
 
-  return api.post('/api/schedules', schedule, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  return api
+    .post('/api/schedules', schedule, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .catch((error) => {
+      console.error('Error creating schedule:', error)
+      return Promise.reject(error.response?.data || { message: 'Error creating schedule' })
+    })
 }
 export async function deleteSchedule(scheduleId: number) {
   return api.delete('/api/schedules/' + scheduleId, {
@@ -35,11 +40,17 @@ export async function updateScheduleById(id: any, updatedFields: any) {
   }
   //console.log('Encrypted updated fields:', updatedFields)
   try {
-    const response = await api.put(`/api/schedules/${id}`, updatedFields, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const response = await api
+      .put(`/api/schedules/${id}`, updatedFields, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .catch((error) => {
+        console.error('Error updating schedule:', error)
+        return Promise.reject(error.response?.data || { message: 'Error updating schedule' })
+      })
+    //console.log('Schedule updated successfully:', response.data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || { message: 'Error updating schedule' }

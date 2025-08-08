@@ -18,7 +18,7 @@
       </p>
     </template>
     <template #footer>
-      <Button class="mr-2" severity="contrast" @click="visible = true">
+      <Button class="mr-2" severity="contrast" @click="openGithub">
         <i class="pi pi-github mr-2"></i>
         Ir al proyecto en GitHub
       </Button>
@@ -225,6 +225,10 @@ import Panel from 'primevue/panel'
 import { ref } from 'vue'
 
 const visible = ref(false)
+
+function openGithub() {
+  window.open('https://github.com/', '_blank')
+}
 </script>
 
 <style scoped></style>
