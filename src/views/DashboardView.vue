@@ -5,7 +5,11 @@
   </div>
   <Card style="overflow: hidden">
     <template #header>
-      <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
+      <img
+        alt="user header"
+        style="height: auto; width: 60%"
+        src="https://saberpunto.com/wp-content/uploads/Tecnicas-de-Diseno-de-Pruebas.png"
+      />
     </template>
     <template #title>Prueba tecnica: </template>
     <template #subtitle>Tienda</template>
@@ -47,6 +51,17 @@
             Se crearon las tablas de usuarios, productos y ventas, con sus respectivas relaciones.
           </li>
           <li>
+            Un usuario tiene relación uno a muchos con los productos que crea y actualiza, también con las ventas que realiza y con sus horarios de trabajo.
+            Cada venta está relacionada con un solo usuario, pero puede tener muchos registros en la tabla sale_items.
+            La tabla sale_items es la intermedia que conecta una venta con sus productos: cada registro de sale_items corresponde a un solo producto vendido en esa venta, pero una venta puede tener varios productos, y por lo tanto varios registros en sale_items.
+            Por su parte, un producto puede aparecer en muchos sale_items, ya que se puede vender en distintas ventas.
+            <img
+              style="width: 50%;"
+              src="../assets/db-diagram.png"
+              alt="Database Schema"
+            />
+          </li>
+          <li>
             Se implementó el CRUD para cada una de estas tablas, permitiendo la creación, lectura,
             actualización y eliminación.
           </li>
@@ -54,6 +69,9 @@
           <li>
             Testeé las consultas y operaciones con Postman para asegurarme de que todo funcionara
             correctamente.
+          </li>
+          <li>
+            <img style="width: 50%;" src="../assets/routes.png"></img>
           </li>
         </ul>
       </Panel>
@@ -67,6 +85,13 @@
             Las transacciones de escritura y edicion viajasn cifradas hacia el back con el algoritmo
             AES
           </li>
+          <li> se usa un guard para proteger las rutas del frontend, si un usario no esta autenticado se manda a login</li>
+          <li>
+            La interfaz es responsiva, se usan loadings y toast para mejor experiencia de usuario.
+          </li>
+          <li>
+            Se cuenta con tema claro exclusivamente por la limitación de tiempo, pero se puede dejar como todo: tema oscuro
+          </li>
         </ul>
       </Panel>
       <Divider align="left">
@@ -76,7 +101,8 @@
         <ul>
           <li>
             Empece con el login y el registro, en este ultimo se pide solo un correo, contraseña y
-            el role que se asignara al usuario, como metodo de prueba no esta protegido.
+            el role que se asignara al usuario, como metodo de prueba no esta protegida la
+            auto-asignacion de admin.
           </li>
           <li>El login requiere el correo y contraseña con el que se relaizo el registro.</li>
           <li>
@@ -168,6 +194,9 @@
           </li>
           <li>Cada click en el boton de carrito, agrega un elemento.</li>
           <li>
+            El stock se actualiza tras cada venta, si el stock es 0 no se puede agregar al carrito.
+          </li>
+          <li>
             En la parte del header de la tabla se encuentra el boton para lanzar un Dialog que
             muestra el estdo actual del carrito.
           </li>
@@ -205,12 +234,16 @@
             Esta vista muestra los horarios de los usuarios, con la posibilidad de crear, editar y
             eliminar horarios, pero estas operaciones solo son para administradores.
           </li>
-          <li>El buscador filtra por el nombre del usuario y el dia de la semana.</li>
+          <li>El buscador filtra por el nombre del usuario y el dia de la semana usando el buscador.</li>
         </ul>
       </Panel>
     </template>
     <template #footer>
-      <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
+      <img
+        alt="user header"
+        style="width: 100%; height: auto; margin-top: 10px"
+        src="https://i0.wp.com/www.offixfiscal.com.mx/wp-content/uploads/2021/05/development-4536630_1280.png?resize=1080%2C675&ssl=1"
+      />
     </template>
   </Card>
 </template>
@@ -227,7 +260,7 @@ import { ref } from 'vue'
 const visible = ref(false)
 
 function openGithub() {
-  window.open('https://github.com/', '_blank')
+  window.open('https://github.com/rvv3nd/tienda/tree/main', '_blank')
 }
 </script>
 
